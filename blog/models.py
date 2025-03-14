@@ -17,16 +17,17 @@ class Post(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts', default=1) # default=1 is the admin user
-    image_url = models.URLField(
-        max_length=200, 
-        blank=True, 
-        default=f'https://picsum.photos/800/400?random={random.randint(1, 1000)}'
-    )
+    image_url = models.URLField(max_length=200, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-created_at']
+
+    def save(self, *args, **kwargs):
+        if not self.image_url:
+            self.image_url = f'https://picsum.photos/800/400?random={random.randint(1, 1000)}'
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title

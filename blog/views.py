@@ -7,6 +7,11 @@ from .models import Post, Comment, UserProfile
 from django.contrib import messages
 from .forms import PostForm, CommentForm
 from django.http import HttpResponseForbidden
+from django.contrib.auth.models import User
+
+def home(request):
+    posts = Post.objects.all().select_related('author').prefetch_related('comments')
+    return render(request, 'blog/home.html', {'posts': posts})
 
 def post_list(request):
     posts = Post.objects.all().select_related('author')
@@ -40,8 +45,27 @@ def dashboard(request):
         profile = UserProfile.objects.get(user=user)
     except UserProfile.DoesNotExist:
         profile = UserProfile.objects.create(user=user)
-    
-    return render(request, 'blog/dashboard.html', {'profile': profile})
+
+    user_posts = Post.objects.filter(author=user).count()
+    user_comments = Comment.objects.filter(author=user).count()
+    post_count = Post.objects.count()
+    comment_count = Comment.objects.count()
+    user_count = User.objects.count()
+    actor_count = UserProfile.objects.filter(role='actor').count()
+    recent_posts = Post.objects.order_by('-created_at')[:5]
+
+    context = {
+        'profile': profile,
+        'user_posts': user_posts,
+        'user_comments': user_comments,
+        'post_count': post_count,
+        'comment_count': comment_count,
+        'user_count': user_count,
+        'actor_count': actor_count,
+        'recent_posts': recent_posts,
+    }
+
+    return render(request, 'blog/dashboard.html', context)
 
 def register(request):
     if request.method == 'POST':
