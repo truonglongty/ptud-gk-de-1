@@ -3,6 +3,7 @@
 ## Thông tin cá nhân
 - **Họ và tên:** Trương Long Tý
 - **MSSV:** 22656001
+- **STT**: 72
 
 ## Giới thiệu
 Đây là một project blog đơn giản được xây dựng bằng Django. Người dùng có thể đăng ký, đăng nhập, tạo bài viết, bình luận và quản lý các bài viết của mình.
