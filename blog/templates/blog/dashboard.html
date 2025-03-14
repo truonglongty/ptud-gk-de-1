@@ -1,0 +1,46 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <h1>Dashboard</h1>
+    
+    <div class="user-info">
+        <h2>Welcome, {{ user.username }}</h2>
+        <p>Role: {{ user_role|title }}</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Your Activity</h3>
+            <p>Posts: {{ user_posts }}</p>
+            <p>Comments: {{ user_comments }}</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Blog Statistics</h3>
+            <p>Total Posts: {{ post_count }}</p>
+            <p>Total Comments: {{ comment_count }}</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>User Statistics</h3>
+            <p>Users: {{ user_count }}</p>
+            <p>Actors: {{ actor_count }}</p>
+        </div>
+    </div>
+
+    <div class="recent-posts">
+        <h3>Recent Posts</h3>
+        <ul>
+            {% for post in recent_posts %}
+            <li>
+                <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
+                <span class="post-date">{{ post.created_at|date:"M d, Y" }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
