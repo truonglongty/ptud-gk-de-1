@@ -14,9 +14,15 @@ then
     exit
 fi
 
-# Tạo và kích hoạt virtual environment
+# Tạo môi trường ảo
 python3 -m venv venv
-source venv/bin/activate
+
+# Kiểm tra hệ điều hành để kích hoạt môi trường ảo đúng cách
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+    source venv/Scripts/activate  # Windows
+else
+    source venv/bin/activate       # Linux/macOS
+fi
 
 # Cài đặt các gói yêu cầu
 pip install -r requirements.txt
